@@ -55,13 +55,6 @@ libraries {
     opencash {
         binaries.all { binary ->
             cppCompiler.args '-I', "$projectDir/src/core/generated" // TODO: ugly hack for relative includes, needs fixing!
-
-            if (binary instanceof SharedLibraryBinary) {
-                linker.args '-lPocoFoundation'
-                linker.args '-lodb-sqlite'
-                linker.args '-lodb'
-                linker.args '-lsqlite3'
-            }
         }
     }
 }
@@ -82,38 +75,28 @@ executables {
 
             lib libraries.opencash.static
 
-            def narClassifier = legacyClassifier(binary.targetPlatform.name)
+            def myPlatform = binary.targetPlatform.name
             project.dependencies {
-                add binary.narConfName, "me.sgeb.opencash.vendor:gmock:1.7.0:${narClassifier}@nar"
-                add binary.narConfName, "me.sgeb.opencash.vendor:gtest:1.7.0:${narClassifier}@nar"
+                add binary.narConfName,
+                    [group: "com.github.opencash.vendor", name: "gtest",
+                        version: "1.7.0", configuration: myPlatform]
+
+                add binary.narConfName,
+                    [group: "com.github.opencash.vendor", name: "gmock",
+                        version: "1.7.0", configuration: myPlatform]
             }
 
             cppCompiler.args '-I', "$projectDir/src" // TODO: ugly hack for relative includes, needs fixing!
 
-            linker.args '-lPocoFoundation'
-            linker.args '-lodb-sqlite'
-            linker.args '-lodb'
-            linker.args '-lsqlite3'
             linker.args '-lgtest'
             linker.args '-lgtest_main'
             linker.args '-lgmock'
             linker.args '-lgmock_main'
+            linker.args '-lPocoFoundation'
+            linker.args '-lodb-sqlite'
+            linker.args '-lodb'
+            linker.args '-lsqlite3'
         }
-    }
-}
-
-binaries.all { binary ->
-    def narClassifier = legacyClassifier(binary.targetPlatform.name)
-    project.dependencies {
-        add binary.narConfName, "me.sgeb.opencash.vendor:poco:1.5.2:${narClassifier}@nar"
-        add binary.narConfName, "me.sgeb.opencash.vendor:libodb:2.3.0:${narClassifier}@nar"
-        add binary.narConfName, "me.sgeb.opencash.vendor:libodb-sqlite:2.3.0:${narClassifier}@nar"
-    }
-
-    if (toolChain in Gcc || toolChain in Clang) {
-        cppCompiler.args '-std=c++11'
-        cppCompiler.args "-I${binary.narDepsDir}/include"
-        linker.args "-L${binary.narDepsDir}/lib"
     }
 }
 
@@ -156,18 +139,56 @@ sources {
     }
 }
 
+binaries.all { binary ->
+    def myPlatform = binary.targetPlatform.name
+    project.dependencies {
+        add binary.narConfName,
+            [group: "com.github.opencash.vendor", name: "poco",
+                version: "1.5.2", configuration: myPlatform]
+
+        add binary.narConfName,
+            [group: "com.github.opencash.vendor", name: "libodb",
+                version: "2.3.0", configuration: myPlatform]
+
+        add binary.narConfName,
+            [group: "com.github.opencash.vendor", name: "libodb-sqlite",
+                version: "2.3.0", configuration: myPlatform]
+    }
+
+    if (toolChain in Gcc || toolChain in Clang) {
+        cppCompiler.args "-std=c++11"
+        cppCompiler.args "-I${binary.narDepsDir}/include"
+
+        if (targetPlatform.operatingSystem.isMacOsX()) {
+            cppCompiler.args "-stdlib=libc++"
+        }
+
+        if (buildType == buildTypes.debug) {
+            cppCompiler.args "-g"
+        }
+
+        if (buildType == buildTypes.release) {
+            cppCompiler.args "-O2"
+        }
+
+        linker.args "-L${binary.narDepsDir}/lib"
+    }
+}
+
 task build {
-    description "Builds all binaries on all buildable platforms."
-    dependsOn binaries.matching { it.buildable }
+    description "Builds all binaries on all buildable platforms (except shared libs)."
+    dependsOn binaries.matching { it.buildable && !(it instanceof SharedLibraryBinary) }
 }
 
 task test {
     description "Builds and runs all tests for current platform."
+
     def testExecutables = binaries.withType(ExecutableBinary).matching {
         it.component.purpose == "test" &&
             it.targetPlatform.operatingSystem.current &&
             it.targetPlatform.architecture.name == System.properties['os.arch']
     }
+
     dependsOn testExecutables
 
     doLast {
@@ -183,12 +204,3 @@ task wrapper(type: Wrapper) {
 }
 
 defaultTasks("tasks")
-
-
-def legacyClassifier(String platformName) {
-    def platformClassifierMap = [
-        'osx-x86_64': 'x86_64-apple-darwin13.0.0',
-        'android-arm': 'arm-linux-androideabi']
-
-    platformClassifierMap[platformName]
-}

@@ -1,6 +1,14 @@
-language: cpp
-compiler:
-  # need at least GCC 4.7 for C++11
-  #- gcc
-  - clang
-script: "./build.sh host Debug all test"
+language: objective-c
+
+install:
+- travis/install.sh
+script:
+- ./gradle-build.sh
+#after_success:
+#- travis/after_success.sh
+after_script:
+- travis/after_script.sh
+
+env:
+  global:
+    secure: cqSqVpXncdff+xAyF7NJwdRnqlyiOTS0Vb11t2l+WQCJgmqeQWojcSipitdAb3++75A3tAYpxesk/q4TfNOMJ1mR7Qs4haz9Vn0zK+mk7ksPIiUVzLOfHt7mDE7OYxtphpPU4WQdag7VDYgSNIOmaQbB2iX9GBZR5zQSSL035sc=
