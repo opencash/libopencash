@@ -12,8 +12,9 @@ _This project is not usable yet!_
 
 # Build instructions
 
-Run `./gradle-build.sh` to build libopencash on your native platform, run the
-tests, and if successful build on all available cross-compilation platforms.
+Run `./gradle-build.sh` to build libopencash on your native platform and execute
+the tests. If all tests pass it will build libopencash for all available
+cross-compilation platforms on your system.
 
 To cross-compile to a particular platform, follow the instructions below.
 
@@ -41,10 +42,11 @@ If you are cross-compiling to linux-amd64 you must add a GCC cross-compilation
 toolchain to you `PATH`. The tools should be prefixed with `x86_64-pc-linux-`
 (`x86_64-pc-linux-g++`, `x86_64-pc-linux-ar`, etc).
 
-You can download a cross-compilation toolchain osx -> linux-amd64 here:
+You can download a cross-compilation toolchain osx --> linux-amd64 here:
 [gcc-4.8.1-for-linux64.tar.bz2](http://crossgcc.rts-software.org/download/gcc-4.8.1-for-linux32-linux64/gcc-4.8.1-for-linux64.tar.bz2),
 thanks to [Pierre
 Molinaro](http://crossgcc.rts-software.org/doku.php?id=compiling_for_linux).
+Extract the archive and add the `bin/` directory to your `PATH`.
 
 ## android-arm
 
@@ -53,9 +55,10 @@ tools should be prefixed with `arm-linux-androideabi-`
 (`arm-linux-androideabi-g++`, `arm-linux-androideabi-ar`, etc). The toolchain
 should be based on GCC (version >= 4.7).
 
-You can download a cross-compilation toolchain osx -> android-arm here:
+You can download a cross-compilation toolchain osx --> android-arm here:
 [arm-linux-androideabi-gcc-4.8-android-14.tar.bz2](https://dl.dropboxusercontent.com/u/8225764/opencash-build-support/arm-linux-androideabi-gcc-4.8-android-14.tar.bz2).
-It contains GCC 4.8 and targets API level 14 (Android 4.0). Created using the
+Extract the archive and add the `bin/` directory to your `PATH`. The toolchain
+contains GCC 4.8 and targets API level 14 (Android 4.0). Created using the
 Android NDK tools with:
 
 ```
