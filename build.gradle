@@ -11,6 +11,9 @@ buildscript {
     }
 }
 
+def localIvyRepoUri = uri("$rootProject.projectDir/../local_ivy_repo")
+if (System.env.IVY_REPO_DIR) { localIvyRepoUri = System.env.IVY_REPO_DIR }
+
 apply plugin: 'cpp'
 apply plugin: 'android-arm-clang'
 apply plugin: 'native-artifacts'
@@ -23,6 +26,9 @@ status "integration"
 repositories {
     ivy {
         url "https://opencash.github.io/ivy_repo/"
+    }
+    ivy {
+        url localIvyRepoUri
     }
 }
 
@@ -50,7 +56,6 @@ model {
     }
 }
 
-libraries.all { ext.purpose = null }
 libraries {
     opencash {
         binaries.all { binary ->
@@ -159,7 +164,8 @@ binaries.all { binary ->
         cppCompiler.args "-std=c++11"
         cppCompiler.args "-I${binary.narDepsDir}/include"
 
-        if (targetPlatform.operatingSystem.isMacOsX()) {
+        // Mac OS X must build with libc++
+        if (targetPlatform.operatingSystem.macOsX) {
             cppCompiler.args "-stdlib=libc++"
             linker.args "-lc++"
         }
@@ -173,6 +179,29 @@ binaries.all { binary ->
         }
 
         linker.args "-L${binary.narDepsDir}/lib"
+    }
+}
+
+nativeArtifacts {
+    libopencash {
+        from (libraries.opencash) {
+            it instanceof StaticLibraryBinary &&
+            it.buildType == buildTypes.debug
+        }
+    }
+}
+
+publishing {
+    publications {
+        ivy(IvyPublication) {
+            from nativeArtifacts.libopencash
+        }
+    }
+
+    repositories {
+        ivy {
+            url localIvyRepoUri
+        }
     }
 }
 

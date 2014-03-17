@@ -4,8 +4,8 @@ install:
 - travis/install.sh
 script:
 - ./gradle-build.sh
-#after_success:
-#- travis/after_success.sh
+after_success:
+- travis/after_success.sh
 after_script:
 - travis/after_script.sh
 

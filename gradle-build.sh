@@ -8,4 +8,4 @@ set -e
 GRADLE_FLAGS=
 [ "$TRAVIS_COMMIT" ] && GRADLE_FLAGS='--no-color -q'
 
-./gradlew $GRADLE_FLAGS test build
+./gradlew $GRADLE_FLAGS test publish

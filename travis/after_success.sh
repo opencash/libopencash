@@ -15,4 +15,3 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
     git push -fq origin gh-pages
     echo "done"
 fi
-
