@@ -162,29 +162,28 @@ TEST(TestAccount, shouldTriggerParentChildrenObserverEvents) {
   MockModelObserver childObs2(*childAcc2);
 
   {
-    using opencash::core::ObservableModel::ChangeType::Insertion;
-    using opencash::core::ObservableModel::ChangeType::Removal;
+    using ChangeType = opencash::core::ObservableModel::ChangeType;
 
     InSequence dummy;
 
     EXPECT_CALL(childObs1, willChange("parent"));
-    EXPECT_CALL(parentObs, willChangeAtIndex("children", 0, Insertion));
-    EXPECT_CALL(parentObs, didChangeAtIndex("children", 0, Insertion));
+    EXPECT_CALL(parentObs, willChangeAtIndex("children", 0, ChangeType::Insertion));
+    EXPECT_CALL(parentObs, didChangeAtIndex("children", 0, ChangeType::Insertion));
     EXPECT_CALL(childObs1, didChange("parent"));
 
     EXPECT_CALL(childObs2, willChange("parent"));
-    EXPECT_CALL(parentObs, willChangeAtIndex("children", 1, Insertion));
-    EXPECT_CALL(parentObs, didChangeAtIndex("children", 1, Insertion));
+    EXPECT_CALL(parentObs, willChangeAtIndex("children", 1, ChangeType::Insertion));
+    EXPECT_CALL(parentObs, didChangeAtIndex("children", 1, ChangeType::Insertion));
     EXPECT_CALL(childObs2, didChange("parent"));
 
     EXPECT_CALL(childObs2, willChange("parent"));
-    EXPECT_CALL(parentObs, willChangeAtIndex("children", 1, Removal));
-    EXPECT_CALL(parentObs, didChangeAtIndex("children", 1, Removal));
+    EXPECT_CALL(parentObs, willChangeAtIndex("children", 1, ChangeType::Removal));
+    EXPECT_CALL(parentObs, didChangeAtIndex("children", 1, ChangeType::Removal));
     EXPECT_CALL(childObs2, didChange("parent"));
 
     EXPECT_CALL(childObs1, willChange("parent"));
-    EXPECT_CALL(parentObs, willChangeAtIndex("children", 0, Removal));
-    EXPECT_CALL(parentObs, didChangeAtIndex("children", 0, Removal));
+    EXPECT_CALL(parentObs, willChangeAtIndex("children", 0, ChangeType::Removal));
+    EXPECT_CALL(parentObs, didChangeAtIndex("children", 0, ChangeType::Removal));
     EXPECT_CALL(childObs1, didChange("parent"));
   }
 

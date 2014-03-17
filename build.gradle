@@ -218,7 +218,7 @@ nativeArtifacts {
 
 publishing {
     publications {
-        ivy(IvyPublication) {
+        libopencash(IvyPublication) {
             from nativeArtifacts.libopencash
         }
     }
