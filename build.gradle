@@ -161,7 +161,7 @@ binaries.all { binary ->
 
         if (targetPlatform.operatingSystem.isMacOsX()) {
             cppCompiler.args "-stdlib=libc++"
-            linker.args "-stdlib=libc++"
+            linker.args "-lc++"
         }
 
         if (buildType == buildTypes.debug) {
