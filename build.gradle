@@ -6,7 +6,6 @@ buildscript {
     }
 
     dependencies {
-        classpath "me.sgeb.gradle.plugins:gradle-android-arm-clang-plugin:0.+"
         classpath "me.sgeb.gradle:gradle-native-artifacts-plugin:1.1.0-SNAPSHOT"
     }
 }
@@ -15,7 +14,6 @@ def localIvyRepoUri = uri("$rootProject.projectDir/../local_ivy_repo")
 if (System.env.IVY_REPO_DIR) { localIvyRepoUri = System.env.IVY_REPO_DIR }
 
 apply plugin: 'cpp'
-apply plugin: 'android-arm-clang'
 apply plugin: 'native-artifacts'
 apply plugin: 'ivy-publish'
 
@@ -39,10 +37,10 @@ model {
             architecture "x86_64"
         }
 
-        /* "linux-amd64" { */
-        /*     operatingSystem "linux" */
-        /*     architecture "amd64" */
-        /* } */
+        "linux-amd64" {
+            operatingSystem "linux"
+            architecture "amd64"
+        }
 
         "android-arm" {
             operatingSystem "linux"
@@ -53,6 +51,33 @@ model {
     buildTypes {
         debug
         release
+    }
+
+    toolChains {
+        gcc(Gcc)
+        clang(Clang)
+
+        "linux-amd64"(Gcc) {
+            def prefix = "x86_64-pc-linux-"
+            CCompiler.executable         = prefix + CCompiler.executable
+            cppCompiler.executable       = prefix + cppCompiler.executable
+            assembler.executable         = prefix + assembler.executable
+            linker.executable            = prefix + linker.executable
+            staticLibArchiver.executable = prefix + staticLibArchiver.executable
+
+            addPlatformConfiguration(new LinuxAmd64Configuration())
+        }
+
+        "android-arm"(Gcc) {
+            def prefix = "arm-linux-androideabi-"
+            CCompiler.executable         = prefix + CCompiler.executable
+            cppCompiler.executable       = prefix + cppCompiler.executable
+            assembler.executable         = prefix + assembler.executable
+            linker.executable            = prefix + linker.executable
+            staticLibArchiver.executable = prefix + staticLibArchiver.executable
+
+            addPlatformConfiguration(new AndroidArmConfiguration())
+        }
     }
 }
 
@@ -234,3 +259,77 @@ task wrapper(type: Wrapper) {
 }
 
 defaultTasks("tasks")
+
+//////////////////////////////////////////////////////////////////////////////
+
+class LinuxAmd64Configuration implements TargetPlatformConfiguration {
+    boolean supportsPlatform(Platform platform) {
+        return platform.operatingSystem.linux && platform.architecture.amd64
+    }
+
+    List<String> getCCompilerArgs() {
+        []
+    }
+
+    List<String> getCppCompilerArgs() {
+        []
+    }
+
+    List<String> getObjectiveCCompilerArgs() {
+        []
+    }
+
+    List<String> getObjectiveCppCompilerArgs() {
+        []
+    }
+
+    List<String> getAssemblerArgs() {
+        []
+    }
+
+    List<String> getLinkerArgs() {
+        []
+    }
+
+    List<String> getStaticLibraryArchiverArgs() {
+        []
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+class AndroidArmConfiguration implements TargetPlatformConfiguration {
+    boolean supportsPlatform(Platform platform) {
+        return platform.operatingSystem.linux &&
+            platform.architecture.arm &&
+            platform.name.toLowerCase().contains("android")
+    }
+
+    List<String> getCCompilerArgs() {
+        []
+    }
+
+    List<String> getCppCompilerArgs() {
+        []
+    }
+
+    List<String> getObjectiveCCompilerArgs() {
+        []
+    }
+
+    List<String> getObjectiveCppCompilerArgs() {
+        []
+    }
+
+    List<String> getAssemblerArgs() {
+        []
+    }
+
+    List<String> getLinkerArgs() {
+        []
+    }
+
+    List<String> getStaticLibraryArchiverArgs() {
+        []
+    }
+}

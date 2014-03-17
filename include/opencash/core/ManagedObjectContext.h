@@ -14,7 +14,6 @@ namespace opencash { namespace core {
     public:
       IMPORT_ALIAS(Account);
       IMPORT_ALIAS(Split);
-      using ManagedObject = ManagedObject;
       using Uuid = ManagedObject::Uuid;
 
     public:
