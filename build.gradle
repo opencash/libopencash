@@ -126,6 +126,10 @@ executables {
             linker.args '-lodb-sqlite'
             linker.args '-lodb'
             linker.args '-lsqlite3'
+
+            if (binary.targetPlatform in platforms."linux-amd64") {
+                linker.args '-lpthread'
+            }
         }
     }
 }
