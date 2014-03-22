@@ -252,7 +252,12 @@ task test {
 
     doLast {
         testExecutables.all { test ->
-            exec { commandLine test.executableFile }
+            exec {
+              logger.quiet ""
+              logger.quiet ">>> Testing `${relativePath test.executableFile}`"
+              logger.quiet ""
+              commandLine test.executableFile
+            }
         }
     }
 }
