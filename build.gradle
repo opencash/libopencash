@@ -23,10 +23,10 @@ status "integration"
 
 repositories {
     ivy {
-        url "https://opencash.github.io/ivy_repo/"
+        url localIvyRepoUri
     }
     ivy {
-        url localIvyRepoUri
+        url "https://opencash.github.io/ivy_repo/"
     }
 }
 
