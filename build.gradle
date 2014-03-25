@@ -91,15 +91,9 @@ libraries {
 
 executables.all { ext.purpose = null }
 executables {
-    TestAccount {
+    unitTests {
         purpose = 'test'
-    }
 
-    TestDocumentController {
-        purpose = 'test'
-    }
-
-    all {
         binaries.all { binary ->
             targetBuildTypes "debug"
 
@@ -148,23 +142,11 @@ sources {
         }
     }
 
-    TestAccount {
+    unitTests {
         cpp {
             source {
                 srcDir "test"
-                include "TestAccount.cpp"
-            }
-            exportedHeaders {
-                srcDir "include"
-            }
-        }
-    }
-
-    TestDocumentController {
-        cpp {
-            source {
-                srcDir "test"
-                include "TestDocumentController.cpp"
+                include "**/*.cpp"
             }
             exportedHeaders {
                 srcDir "include"

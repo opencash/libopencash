@@ -10,7 +10,7 @@ IMPORT_ALIAS(Split);
 
 using namespace testing;
 
-TEST(TestTransaction, shouldAddSplitIntoTransaction) {
+TEST(Transaction, shouldAddSplitIntoTransaction) {
   //given
   TransactionPtr transaction(new Transaction());
   SplitPtr split1(new Split());
@@ -27,7 +27,7 @@ TEST(TestTransaction, shouldAddSplitIntoTransaction) {
   ASSERT_EQ(split2, splits[1]);
 }
 
-TEST(TestTransaction, shouldRemoveSplitFromTransaction) {
+TEST(Transaction, shouldRemoveSplitFromTransaction) {
   //given
   TransactionPtr transaction(new Transaction());
   SplitPtr split1(new Split());
@@ -45,7 +45,7 @@ TEST(TestTransaction, shouldRemoveSplitFromTransaction) {
   // ASSERT_EQ(split2, splits[1]);
 }
 
-TEST(TestTransaction, shouldSetTransactionInSplitWhenAddingSplit) {
+TEST(Transaction, shouldSetTransactionInSplitWhenAddingSplit) {
   //given
   TransactionPtr transaction(new Transaction());
   SplitPtr split1(new Split());
@@ -57,7 +57,7 @@ TEST(TestTransaction, shouldSetTransactionInSplitWhenAddingSplit) {
   ASSERT_EQ(transaction, split1->getTransaction().lock());
 }
 
-TEST(TestTransaction, shouldTriggerMemberObserverEvents) {
+TEST(Transaction, shouldTriggerMemberObserverEvents) {
   // given
   TransactionPtr transaction(new Transaction());
   SplitPtr split1(new Split());

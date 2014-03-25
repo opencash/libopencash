@@ -10,7 +10,7 @@ IMPORT_ALIAS(Split);
 
 using InSequence = ::testing::InSequence;
 
-TEST(TestAccount, shouldAllowOneParent) {
+TEST(Account, shouldAllowOneParent) {
   // given
   AccountPtr parentAcc(new Account());
   parentAcc->setName("parent");
@@ -25,7 +25,7 @@ TEST(TestAccount, shouldAllowOneParent) {
   ASSERT_EQ(parentAcc, childAcc->getParent());
 }
 
-TEST(TestAccount, shouldAllowMultipleChildren) {
+TEST(Account, shouldAllowMultipleChildren) {
   // given
   AccountPtr parentAcc(new Account());
   parentAcc->setName("parent");
@@ -46,7 +46,7 @@ TEST(TestAccount, shouldAllowMultipleChildren) {
   ASSERT_EQ(2, parentAcc->getChildren().size());
 }
 
-TEST(TestAccount, shouldRemoveChildFromParentWhenUnsettingParent) {
+TEST(Account, shouldRemoveChildFromParentWhenUnsettingParent) {
   // given
   AccountPtr parentAcc(new Account());
   parentAcc->setName("parent");
@@ -84,7 +84,7 @@ TEST(TestTransaction, shouldAddSplitIntoAccount) {
   ASSERT_EQ(split2, splits[1]);
 }
 
-TEST(TestAccount, shouldNotTriggerParentChangedWhenSettingToSameParent) {
+TEST(Account, shouldNotTriggerParentChangedWhenSettingToSameParent) {
   // given
   AccountPtr parentAcc(new Account());
   AccountPtr parentAccRef(parentAcc);
@@ -107,7 +107,7 @@ TEST(TestAccount, shouldNotTriggerParentChangedWhenSettingToSameParent) {
   // mock expectations implicitly verified
 }
 
-TEST(TestAccount, shouldNotTriggerParentChangedWhenUnsettingParentIfAccountHasNoParent) {
+TEST(Account, shouldNotTriggerParentChangedWhenUnsettingParentIfAccountHasNoParent) {
   AccountPtr accountWithoutParent(new Account());
   MockModelObserver accountObserver(*accountWithoutParent);
 
@@ -123,7 +123,7 @@ TEST(TestAccount, shouldNotTriggerParentChangedWhenUnsettingParentIfAccountHasNo
   // mock expectations implicitly verified
 }
 	
-TEST(TestAccount, shouldTriggerMemberObserverEvents) {
+TEST(Account, shouldTriggerMemberObserverEvents) {
   // given
   Account acc;
   MockModelObserver obs(acc);
@@ -150,7 +150,7 @@ TEST(TestAccount, shouldTriggerMemberObserverEvents) {
   // mock expectations implicitly verified
 }
 
-TEST(TestAccount, shouldTriggerParentChildrenObserverEvents) {
+TEST(Account, shouldTriggerParentChildrenObserverEvents) {
   // given
   AccountPtr parentAcc(new Account());
   MockModelObserver parentObs(*parentAcc);

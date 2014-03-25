@@ -12,7 +12,7 @@ IMPORT_ALIAS(Account);
 
 using namespace testing;
 
-TEST(TestSplit, shouldTriggerMemberObserverEvents) {
+TEST(Split, shouldTriggerMemberObserverEvents) {
   // given
   SplitPtr split(new Split());
   TransactionPtr transaction(new Transaction());
@@ -49,7 +49,7 @@ TEST(TestSplit, shouldTriggerMemberObserverEvents) {
   // mock expectations implicitly verified
 }
 
-TEST(TestSplit, shouldAddSplitIntoTransaction) {
+TEST(Split, shouldAddSplitIntoTransaction) {
   // given
   SplitPtr split(new Split());
   TransactionPtr transaction(new Transaction());
@@ -61,7 +61,7 @@ TEST(TestSplit, shouldAddSplitIntoTransaction) {
   ASSERT_EQ(1, transaction->getSplits().size());
 }
 
-TEST(TestSplit, shouldRemoveSplitFromTransactionWhenChagingToNull) {
+TEST(Split, shouldRemoveSplitFromTransactionWhenChagingToNull) {
   // given
   SplitPtr split(new Split());
   TransactionPtr transaction(new Transaction());
@@ -74,7 +74,7 @@ TEST(TestSplit, shouldRemoveSplitFromTransactionWhenChagingToNull) {
   ASSERT_EQ(0, transaction->getSplits().size());
 }
 
-TEST(TestSplit, shouldRemoveSplitFromTransactionAndInsertIntoAnotherTransaction) {
+TEST(Split, shouldRemoveSplitFromTransactionAndInsertIntoAnotherTransaction) {
   // given
   SplitPtr split(new Split());
   TransactionPtr tx1(new Transaction());
@@ -89,7 +89,7 @@ TEST(TestSplit, shouldRemoveSplitFromTransactionAndInsertIntoAnotherTransaction)
   ASSERT_EQ(1, tx2->getSplits().size());
 }
 
-TEST(TestSplit, shouldAddSplitIntoAccount) {
+TEST(Split, shouldAddSplitIntoAccount) {
   // given
   SplitPtr split(new Split());
   AccountPtr account(new Account());
@@ -101,7 +101,7 @@ TEST(TestSplit, shouldAddSplitIntoAccount) {
   ASSERT_EQ(1, account->getSplits().size());
 }
 
-TEST(TestSplit, shouldRemoveSplitFromAccountWhenChagingToNull) {
+TEST(Split, shouldRemoveSplitFromAccountWhenChagingToNull) {
   // given
   SplitPtr split(new Split());
   AccountPtr account(new Account());
@@ -114,7 +114,7 @@ TEST(TestSplit, shouldRemoveSplitFromAccountWhenChagingToNull) {
   ASSERT_EQ(0, account->getSplits().size());
 }
 
-TEST(TestSplit, shouldRemoveSplitFromAccountAndInsertIntoAnotherAccount) {
+TEST(Split, shouldRemoveSplitFromAccountAndInsertIntoAnotherAccount) {
   // given
   SplitPtr split(new Split());
   AccountPtr acc1(new Account());

@@ -16,6 +16,7 @@ namespace opencash { namespace core {
   AccountPtr ManagedObjectContext::createAccount() {
     AccountPtr account(new Account);
     assignUuid(*account);
+    _accounts.push_back(account);
     return account;
   }
 
@@ -27,6 +28,10 @@ namespace opencash { namespace core {
 
   bool ManagedObjectContext::hasUuid(const Uuid & uuid) const {
     return _uuids.find(uuid) != _uuids.end();
+  }
+
+  const Accounts ManagedObjectContext::getAllAccounts() const {
+    return _accounts;
   }
 
   // protected

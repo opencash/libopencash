@@ -9,31 +9,42 @@ using ManagedObjectContext = opencash::core::ManagedObjectContext;
 IMPORT_ALIAS(Account);
 IMPORT_ALIAS(Split);
 
-class TestManagedObjectContext : public ::testing::Test {
-  protected:
-    ManagedObjectContext _moc;
-};
 
-TEST_F(TestManagedObjectContext, shouldCreateAccount) {
+TEST(ManagedObjectContext, shouldCreateAccount) {
   // given
+  ManagedObjectContext moc;
 
   // when
-  AccountPtr account = _moc.createAccount();
+  AccountPtr account = moc.createAccount();
 
   // then
   ASSERT_TRUE(account != NULL);
   ASSERT_FALSE(account->getUuid().empty());
-  ASSERT_TRUE(_moc.hasUuid(account->getUuid()));
+  ASSERT_TRUE(moc.hasUuid(account->getUuid()));
 }
 
-TEST_F(TestManagedObjectContext, shouldCreateSplit) {
+TEST(ManagedObjectContext, shouldCreateSplit) {
   // given
+  ManagedObjectContext moc;
 
   // when
-  SplitPtr split = _moc.createSplit();
+  SplitPtr split = moc.createSplit();
 
   // then
   ASSERT_TRUE(split != NULL);
   ASSERT_FALSE(split->getUuid().empty());
-  ASSERT_TRUE(_moc.hasUuid(split->getUuid()));
+  ASSERT_TRUE(moc.hasUuid(split->getUuid()));
+}
+
+TEST(ManagedObjectContext, shouldGetAllAccounts) {
+  // given
+  ManagedObjectContext moc;
+  moc.createAccount();
+  moc.createAccount();
+
+  // when
+  Accounts accounts = moc.getAllAccounts();
+
+  // then
+  ASSERT_EQ(2, accounts.size());
 }

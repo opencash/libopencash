@@ -20,6 +20,7 @@ namespace opencash { namespace core {
       AccountPtr createAccount();
       SplitPtr createSplit();
       bool hasUuid(const Uuid & uuid) const;
+      const Accounts getAllAccounts() const;
 
     protected:
       void assignUuid(ManagedObject & mobj);
@@ -27,6 +28,7 @@ namespace opencash { namespace core {
 
     private:
       std::set<Uuid> _uuids;
+      Accounts _accounts;
   };
 
 }}
