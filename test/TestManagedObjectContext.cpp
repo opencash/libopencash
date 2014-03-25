@@ -23,6 +23,19 @@ TEST(ManagedObjectContext, shouldCreateAccount) {
   ASSERT_TRUE(moc.hasUuid(account->getUuid()));
 }
 
+TEST(ManagedObjectContext, shouldGetAllAccounts) {
+  // given
+  ManagedObjectContext moc;
+  moc.createAccount();
+  moc.createAccount();
+
+  // when
+  Accounts accounts = moc.getAllAccounts();
+
+  // then
+  ASSERT_EQ(2, accounts.size());
+}
+
 TEST(ManagedObjectContext, shouldCreateSplit) {
   // given
   ManagedObjectContext moc;
@@ -36,15 +49,15 @@ TEST(ManagedObjectContext, shouldCreateSplit) {
   ASSERT_TRUE(moc.hasUuid(split->getUuid()));
 }
 
-TEST(ManagedObjectContext, shouldGetAllAccounts) {
+TEST(ManagedObjectContext, shouldGetAllSplits) {
   // given
   ManagedObjectContext moc;
-  moc.createAccount();
-  moc.createAccount();
+  moc.createSplit();
+  moc.createSplit();
 
   // when
-  Accounts accounts = moc.getAllAccounts();
+  Splits splits = moc.getAllSplits();
 
   // then
-  ASSERT_EQ(2, accounts.size());
+  ASSERT_EQ(2, splits.size());
 }

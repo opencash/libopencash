@@ -20,18 +20,23 @@ namespace opencash { namespace core {
     return account;
   }
 
+  const Accounts ManagedObjectContext::getAllAccounts() const {
+    return _accounts;
+  }
+
   SplitPtr ManagedObjectContext::createSplit() {
     SplitPtr split(new Split);
     assignUuid(*split);
+    _splits.push_back(split);
     return split;
+  }
+
+  const Splits ManagedObjectContext::getAllSplits() const {
+    return _splits;
   }
 
   bool ManagedObjectContext::hasUuid(const Uuid & uuid) const {
     return _uuids.find(uuid) != _uuids.end();
-  }
-
-  const Accounts ManagedObjectContext::getAllAccounts() const {
-    return _accounts;
   }
 
   // protected
