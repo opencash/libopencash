@@ -10,8 +10,13 @@ namespace opencash { namespace core {
 
   ManagedObjectContextPtr Api::createSampleManagedObjectContext() const {
     ManagedObjectContextPtr moc(new ManagedObjectContext);
-    for (int i = 0; i < 3; i++) {
-      moc->createAccount();
+
+    AccountPtr rootAccount = moc->createAccount();
+    rootAccount->setType(Account::AccountType::Root);
+
+    for (int i = 0; i < 2; i++) {
+      AccountPtr account = moc->createAccount();
+      account->setParent(rootAccount);
     }
     return moc;
   }
