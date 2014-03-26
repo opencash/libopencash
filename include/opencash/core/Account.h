@@ -34,6 +34,7 @@ namespace opencash { namespace core {
       };
 
     public:
+      Account();
       DECL_COMPARATORS(Account);
 
       std::string getName() const;

@@ -7,6 +7,10 @@ namespace opencash { namespace core {
 
   IMPL_COMPARATORS(Account);
 
+  Account::Account() {
+    _type = AccountType::None;
+  }
+
   std::string Account::getName() const
   {
     return _name;

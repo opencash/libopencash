@@ -10,6 +10,14 @@ IMPORT_ALIAS(Split);
 
 using InSequence = ::testing::InSequence;
 
+TEST(Account, shouldInitializeWithTypeNone) {
+  // when
+  AccountPtr account(new Account());
+
+  // then
+  ASSERT_EQ(Account::AccountType::None, account->getType());
+}
+
 TEST(Account, shouldAllowOneParent) {
   // given
   AccountPtr parentAcc(new Account());
