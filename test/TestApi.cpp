@@ -1,4 +1,5 @@
-#include "opencash/core/Api.h"
+#include "opencash/api/Api.h"
+#include "opencash/datastore/OpenCashWriter.h"
 #include "opencash/core/definitions.h"
 #include "opencash/core/ManagedObjectContext.h"
 #include "opencash/core/Account.h"
@@ -7,13 +8,27 @@
 #include <gmock/gmock.h>
 using namespace testing;
 
-using Api = opencash::core::Api;
+using Api = opencash::api::Api;
+using OpenCashWriter = opencash::datastore::OpenCashWriter;
 IMPORT_ALIAS(ManagedObjectContext);
 IMPORT_ALIAS(Account);
 
-class PartialMockApi : public Api {
+class MockOpenCashWriter : public OpenCashWriter {
+  public:
+    MOCK_CONST_METHOD1(write, void(const ManagedObjectContext&));
+};
+
+class MockApi : public Api {
   public:
     MOCK_CONST_METHOD0(createSampleManagedObjectContext, ManagedObjectContextPtr());
+
+  protected:
+    virtual const OpenCashWriter& getOpenCashWriter() const override {
+      return _mockOpenCashWriter;
+    }
+
+  public:
+    MockOpenCashWriter _mockOpenCashWriter;
 };
 
 TEST(Api, shouldCreateSampleManagedObjectContext) {
@@ -34,12 +49,13 @@ TEST(Api, shouldCreateSampleManagedObjectContext) {
 
 TEST(Api, shouldInvokeCreateSampleMocWhenCreateSampleFile) {
   // given
-  PartialMockApi api;
-  Api _proxy;
+  MockApi api;
+  ManagedObjectContextPtr mocPtr(new ManagedObjectContext());
 
   // expect
   EXPECT_CALL(api, createSampleManagedObjectContext())
-    .WillOnce(Invoke(&_proxy, &Api::createSampleManagedObjectContext));
+    .WillOnce(Return(mocPtr));
+  EXPECT_CALL(api._mockOpenCashWriter, write(Ref(*mocPtr)));
 
   // when
   api.createSampleFile("test.opencash");

@@ -1,9 +1,10 @@
-#include "opencash/core/Api.h"
+#include "opencash/api/Api.h"
 #include "opencash/core/ManagedObjectContext.h"
 #include "opencash/core/Account.h"
 
-namespace opencash { namespace core {
+namespace opencash { namespace api {
   IMPORT_ALIAS(Account);
+  IMPORT_ALIAS(ManagedObjectContext);
 
   Api::Api() {}
   Api::~Api() {}
@@ -23,6 +24,11 @@ namespace opencash { namespace core {
 
   void Api::createSampleFile(const std::string& outputFileName) const {
     ManagedObjectContextPtr moc(createSampleManagedObjectContext());
+    getOpenCashWriter().write(*moc);
   }
 
-} }
+  const datastore::OpenCashWriter& Api::getOpenCashWriter() const {
+    return _openCashWriter;
+  }
+
+}}
