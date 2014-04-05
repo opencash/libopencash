@@ -22,6 +22,7 @@ namespace opencash { namespace api {
       virtual void createSampleFile(const std::string& outputFileName) const;
 
     protected:
+      virtual bool fileExists(const std::string& fileName) const;
       virtual const datastore::OpenCashWriter& getOpenCashWriter() const;
 
     private:

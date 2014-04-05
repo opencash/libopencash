@@ -1,4 +1,5 @@
 #include "opencash/api/Api.h"
+#include "opencash/api/ApiExceptions.h"
 #include "opencash/datastore/OpenCashWriter.h"
 #include "opencash/core/definitions.h"
 #include "opencash/core/ManagedObjectContext.h"
@@ -18,9 +19,10 @@ class MockOpenCashWriter : public OpenCashWriter {
     MOCK_CONST_METHOD1(write, void(const ManagedObjectContext&));
 };
 
-class MockApi : public Api {
+class PartialMockApi : public Api {
   public:
     MOCK_CONST_METHOD0(createSampleManagedObjectContext, ManagedObjectContextPtr());
+    MOCK_CONST_METHOD1(fileExists, bool(const std::string&));
 
   protected:
     virtual const OpenCashWriter& getOpenCashWriter() const override {
@@ -47,16 +49,30 @@ TEST(Api, shouldCreateSampleManagedObjectContext) {
   ASSERT_EQ(accounts[0], accounts[2]->getParent());
 }
 
-TEST(Api, shouldInvokeCreateSampleMocWhenCreateSampleFile) {
+TEST(Api, createSampleFileShouldInvokeCreateSampleMoc) {
   // given
-  MockApi api;
+  PartialMockApi api;
   ManagedObjectContextPtr mocPtr(new ManagedObjectContext());
 
   // expect
   EXPECT_CALL(api, createSampleManagedObjectContext())
     .WillOnce(Return(mocPtr));
+  EXPECT_CALL(api, fileExists(_)).WillRepeatedly(Return(false));
   EXPECT_CALL(api._mockOpenCashWriter, write(Ref(*mocPtr)));
 
   // when
   api.createSampleFile("test.opencash");
+}
+
+TEST(Api, createSampleFileShouldThrowWhenFileExists) {
+  // given
+  PartialMockApi api;
+  ManagedObjectContextPtr mocPtr(new ManagedObjectContext());
+
+  // expect
+  EXPECT_CALL(api, fileExists(_)).WillRepeatedly(Return(true));
+
+  // then
+  ASSERT_THROW(api.createSampleFile("test.opencash"),
+      opencash::api::FileAlreadyExists);
 }

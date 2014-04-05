@@ -1,6 +1,9 @@
 #include "opencash/api/Api.h"
 #include "opencash/core/ManagedObjectContext.h"
 #include "opencash/core/Account.h"
+#include "opencash/api/ApiExceptions.h"
+
+#include <Poco/File.h>
 
 namespace opencash { namespace api {
   IMPORT_ALIAS(Account);
@@ -23,8 +26,16 @@ namespace opencash { namespace api {
   }
 
   void Api::createSampleFile(const std::string& outputFileName) const {
+    if (fileExists(outputFileName)) {
+      throw FileAlreadyExists(outputFileName);
+    }
+
     ManagedObjectContextPtr moc(createSampleManagedObjectContext());
     getOpenCashWriter().write(*moc);
+  }
+
+  bool Api::fileExists(const std::string& fileName) const {
+    return Poco::File(fileName).exists();
   }
 
   const datastore::OpenCashWriter& Api::getOpenCashWriter() const {
