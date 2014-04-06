@@ -82,15 +82,16 @@ TEST_F(ApiTest, createSampleFileShouldThrowWhenFileExists) {
 }
 
 TEST_F(ApiTest, createSampleFileShouldCreateAFile) {
+  // prepare
+  Poco::File f("test.opencash");
+  if (f.exists()) f.remove();
+
   // given
-  ASSERT_FALSE(Poco::File("test.opencash").exists());
+  ASSERT_FALSE(f.exists());
 
   // when
   _realApi.createSampleFile("test.opencash");
 
   // then
-  ASSERT_TRUE(Poco::File("test.opencash").exists());
-
-  // cleanup
-  Poco::File("test.opencash").remove();
+  ASSERT_TRUE(f.exists());
 }
