@@ -24,6 +24,17 @@ namespace opencash { namespace core {
     return _accounts;
   }
 
+  TransactionPtr ManagedObjectContext::createTransaction() {
+    TransactionPtr transaction(new Transaction);
+    assignUuid(*transaction);
+    _transactions.push_back(transaction);
+    return transaction;
+  }
+
+  const Transactions ManagedObjectContext::getAllTransactions() const {
+    return _transactions;
+  }
+
   SplitPtr ManagedObjectContext::createSplit() {
     SplitPtr split(new Split);
     assignUuid(*split);

@@ -8,17 +8,22 @@
 
 namespace opencash { namespace core {
   class Account;
+  class Transaction;
   class Split;
 
   class ManagedObjectContext {
     public:
       IMPORT_ALIAS(Account);
+      IMPORT_ALIAS(Transaction);
       IMPORT_ALIAS(Split);
       using Uuid = ManagedObject::Uuid;
 
     public:
       AccountPtr createAccount();
       const Accounts getAllAccounts() const;
+
+      TransactionPtr createTransaction();
+      const Transactions getAllTransactions() const;
 
       SplitPtr createSplit();
       const Splits getAllSplits() const;
@@ -32,6 +37,7 @@ namespace opencash { namespace core {
     private:
       std::set<Uuid> _uuids;
       Accounts _accounts;
+      Transactions _transactions;
       Splits _splits;
   };
 

@@ -15,6 +15,8 @@ using Api = opencash::api::Api;
 using OpenCashWriter = opencash::datastore::OpenCashWriter;
 IMPORT_ALIAS(ManagedObjectContext);
 IMPORT_ALIAS(Account);
+IMPORT_ALIAS(Transaction);
+IMPORT_ALIAS(Split);
 
 class MockOpenCashWriter : public OpenCashWriter {
   public:
@@ -56,6 +58,12 @@ TEST_F(ApiTest, shouldCreateSampleManagedObjectContext) {
   EXPECT_EQ(Account::AccountType::Root, accounts[0]->getType());
   EXPECT_EQ(accounts[0], accounts[1]->getParent());
   EXPECT_EQ(accounts[0], accounts[2]->getParent());
+
+  Transactions transactions = moc->getAllTransactions();
+  EXPECT_EQ(1, transactions.size());
+
+  Splits splits = moc->getAllSplits();
+  EXPECT_EQ(2, splits.size());
 }
 
 TEST_F(ApiTest, createSampleFileShouldInvokeCreateSampleManagedObjectContext) {

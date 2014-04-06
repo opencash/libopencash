@@ -7,6 +7,7 @@
 using ManagedObjectContext = opencash::core::ManagedObjectContext;
 
 IMPORT_ALIAS(Account);
+IMPORT_ALIAS(Transaction);
 IMPORT_ALIAS(Split);
 
 
@@ -34,6 +35,32 @@ TEST(ManagedObjectContext, shouldGetAllAccounts) {
 
   // then
   ASSERT_EQ(2, accounts.size());
+}
+
+TEST(ManagedObjectContext, shouldCreateTransaction) {
+  // given
+  ManagedObjectContext moc;
+
+  // when
+  TransactionPtr transaction = moc.createTransaction();
+
+  // then
+  ASSERT_TRUE(transaction != NULL);
+  ASSERT_FALSE(transaction->getUuid().empty());
+  ASSERT_TRUE(moc.hasUuid(transaction->getUuid()));
+}
+
+TEST(ManagedObjectContext, shouldGetAllTransactions) {
+  // given
+  ManagedObjectContext moc;
+  moc.createTransaction();
+  moc.createTransaction();
+
+  // when
+  Transactions transactions = moc.getAllTransactions();
+
+  // then
+  ASSERT_EQ(2, transactions.size());
 }
 
 TEST(ManagedObjectContext, shouldCreateSplit) {
