@@ -3,6 +3,7 @@
 
 #include "../core/definitions.h"
 #include "../datastore/OpenCashWriter.h"
+#include "ApiExceptions.h"
 
 #include <string>
 
@@ -19,7 +20,8 @@ namespace opencash { namespace api {
       virtual ~Api();
 
       virtual core::ManagedObjectContextPtr createSampleManagedObjectContext() const;
-      virtual void createSampleFile(const std::string& outputFileName) const;
+      virtual void createSampleFile(const std::string& outputFileName)
+        const throw (FileAlreadyExists);
 
     protected:
       virtual bool fileExists(const std::string& fileName) const;

@@ -3,6 +3,8 @@
 
 #include "WriterInterface.h"
 
+#include <string>
+
 namespace opencash { namespace core {
   class ManagedObjectContext;
 }}
@@ -15,6 +17,8 @@ namespace opencash { namespace datastore {
       virtual ~OpenCashWriter();
 
       virtual void write(const core::ManagedObjectContext& moc) const override;
+      virtual void write(const core::ManagedObjectContext& moc,
+          const std::string& fileName) const;
   };
 
 }}

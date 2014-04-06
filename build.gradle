@@ -234,10 +234,14 @@ task test {
 
     doLast {
         testExecutables.all { test ->
+            def tempDir = new File(temporaryDir, test.executableFile.name)
+            tempDir.mkdirs()
             exec {
               logger.quiet ""
               logger.quiet ">>> Testing `${relativePath test.executableFile}`"
+              logger.quiet ">>> in dir `${tempDir}`"
               logger.quiet ""
+              workingDir tempDir
               commandLine test.executableFile
             }
         }

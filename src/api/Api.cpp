@@ -1,7 +1,6 @@
 #include "opencash/api/Api.h"
 #include "opencash/core/ManagedObjectContext.h"
 #include "opencash/core/Account.h"
-#include "opencash/api/ApiExceptions.h"
 
 #include <Poco/File.h>
 
@@ -25,13 +24,13 @@ namespace opencash { namespace api {
     return moc;
   }
 
-  void Api::createSampleFile(const std::string& outputFileName) const {
+  void Api::createSampleFile(const std::string& outputFileName) const throw (FileAlreadyExists) {
     if (fileExists(outputFileName)) {
       throw FileAlreadyExists(outputFileName);
     }
 
     ManagedObjectContextPtr moc(createSampleManagedObjectContext());
-    getOpenCashWriter().write(*moc);
+    getOpenCashWriter().write(*moc, outputFileName);
   }
 
   bool Api::fileExists(const std::string& fileName) const {
