@@ -23,7 +23,7 @@ class MockOpenCashWriter : public OpenCashWriter {
     MOCK_CONST_METHOD2(write, void(const ManagedObjectContext&, const std::string&));
 };
 
-class MockApi : public Api {
+class PartialMockApi : public Api {
   public:
     MOCK_CONST_METHOD0(createSampleManagedObjectContext, ManagedObjectContextPtr());
     MOCK_CONST_METHOD1(fileExists, bool(const std::string&));
@@ -44,7 +44,7 @@ class ApiTest : public ::testing::Test {
         .WillByDefault(Invoke(&_realApi, &Api::createSampleManagedObjectContext));
     }
 
-    MockApi _mockApi;
+    PartialMockApi _mockApi;
     Api _realApi;
 };
 
