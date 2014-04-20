@@ -656,7 +656,7 @@ namespace odb
     // _name
     //
     {
-      // From Account.h:63:18
+      // From Account.h:64:18
       ::std::string v;
 
       sqlite::value_traits<
@@ -667,14 +667,14 @@ namespace odb
         i._name_size,
         i._name_null);
 
-      // From Account.h:63:18
+      // From Account.h:64:18
       o.setName (v);
     }
 
     // _descr
     //
     {
-      // From Account.h:66:18
+      // From Account.h:67:18
       ::std::string v;
 
       sqlite::value_traits<
@@ -685,14 +685,14 @@ namespace odb
         i._descr_size,
         i._descr_null);
 
-      // From Account.h:66:18
+      // From Account.h:67:18
       o.setDescr (v);
     }
 
     // _type
     //
     {
-      // From Account.h:69:18
+      // From Account.h:70:18
       ::opencash::core::Account::AccountType v;
 
       sqlite::value_traits<
@@ -702,14 +702,14 @@ namespace odb
         i._type_value,
         i._type_null);
 
-      // From Account.h:69:18
+      // From Account.h:70:18
       o.setType (v);
     }
 
     // _parent
     //
     {
-      // From Account.h:72:18
+      // From Account.h:73:18
       ::opencash::core::Account::AccountPtr v;
 
       typedef object_traits< ::opencash::core::Account > obj_traits;
@@ -737,7 +737,7 @@ namespace odb
             obj_traits::object_type > (id));
       }
 
-      // From Account.h:72:18
+      // From Account.h:73:18
       o.setParent (v);
     }
   }
