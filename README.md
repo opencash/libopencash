@@ -12,7 +12,7 @@ _This project is not usable yet!_
 
 # Build instructions
 
-Run `./gradle-build.sh` to build libopencash on your native platform and execute
+Run `./build.sh` to build libopencash on your native platform and execute
 the tests. If all tests pass it will build libopencash for all available
 cross-compilation platforms on your system.
 

@@ -3,7 +3,7 @@ language: objective-c
 install:
 - travis/install.sh
 script:
-- ./gradle-build.sh
+- ./build.sh
 after_success:
 - travis/after_success.sh
 after_script:
